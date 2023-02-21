@@ -1,0 +1,41 @@
+#ifndef PIPEX_H
+#define PIPEX_H
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <errno.h>
+#include "../libft/libft.h"
+#define ARG_NUM_ERR "Wrong number of argument\n"
+#define OPEN_ERR "Error opening file"
+#define PATH_ERR "Error cannot find the right path\n"
+
+typedef struct s_pipex
+{
+	int		infile;
+	int		outfile;
+	char	**path;
+	char	*prefix;
+	char	**cmd1_strs;
+	char	**cmd2_strs;
+	char	*cmd1;
+	char	*cmd2;
+	int		*fd;
+}				t_pipex;
+
+int		check_args(int argc, char **argv);
+void	parse_cmd_for_exec(t_pipex *pipex, char **argv);
+int		check_bin(char *cmd);
+char	**find_path(char **envp);
+char	*get_prefix(char **strs);
+void	launch_processes(t_pipex *pipex, char **envp);
+int		find_2d_arr_size(void **arr);
+//free
+void	free_2d_arr(void **arr);
+void	print_msg_exit(char *msg);
+void	perror_exit(char *msg);
+void	free_pipex(t_pipex *pipex);
+void	free_prev_arr(void **arr, int i);
+#endif
