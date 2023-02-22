@@ -11,7 +11,7 @@ int	wait_status(t_pipex *pipex, int	pid)
 	waitpid(id, &wstatus, 0);
 	if (WIFEXITED(wstatus))
 	{
-		if (WEXITSTATUS(wstatus) == EXIT_FAILURE)
+		if (WEXITSTATUS(wstatus) != EXIT_SUCCESS)
 		{
 			free_pipex(pipex);
 			return (WEXITSTATUS(wstatus));

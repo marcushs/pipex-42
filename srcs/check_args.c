@@ -25,5 +25,6 @@ char	*check_bin(char *cmd, char **path)
 			rtn_cmd = NULL;
 		}
 	}
+	perror("Command not found");
 	return (NULL);
 }

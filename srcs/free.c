@@ -29,9 +29,9 @@ void	free_2d_arr(void **arr)
 	*arr = NULL;
 }
 
-void	perror_exit(char *msg)
+void	strerror_exit(void)
 {
-	perror(msg);
+	strerror(errno);
 	exit(errno);
 }
 

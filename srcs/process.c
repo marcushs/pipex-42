@@ -31,18 +31,18 @@ void	first_child(t_pipex *pipex, char **envp)
 	if (dup2(pipex->infile, STDIN_FILENO) == -1)
 	{
 		free_pipex(pipex);
-		perror_exit(NULL);
+		strerror_exit();
 	}
 	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
 	{
 		free_pipex(pipex);
-		perror_exit(NULL);
+		strerror_exit();
 	}
 	execve(pipex->cmd1, pipex->cmd1_strs, envp);
 	err = errno;
 	strerror(err);
 	free_pipex(pipex);
-	exit(EXIT_FAILURE);
+	exit(err);
 }
 
 void	second_child(t_pipex *pipex, char **envp)
@@ -52,18 +52,18 @@ void	second_child(t_pipex *pipex, char **envp)
 	if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
 	{
 		free_pipex(pipex);
-		perror_exit(NULL);
+		strerror_exit();
 	}
 	if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
 	{
 		free_pipex(pipex);
-		perror_exit(NULL);
+		strerror_exit();;
 	}
 	execve(pipex->cmd2, pipex->cmd2_strs, envp);
 	err = errno;
 	strerror(err);
 	free_pipex(pipex);
-	exit(EXIT_FAILURE);
+	exit(err);
 }
 
 void	launch_processes(t_pipex *pipex, char **envp)

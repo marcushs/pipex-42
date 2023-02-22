@@ -36,7 +36,7 @@ int		wait_status(t_pipex *pipex, int pid);
 //free
 void	free_2d_arr(void **arr);
 void	print_msg_exit(char *msg);
-void	perror_exit(char *msg);
+void	strerror_exit(void);
 void	free_pipex(t_pipex *pipex);
 void	free_prev_arr(void **arr, int i);
 #endif
