@@ -14,10 +14,10 @@ int	main(int argc, char **argv, char **envp)
 		perror_exit(OPEN_ERR);
 	pipex.path = find_path(envp);
 	if (!pipex.path)
-		print_msg_exit(PATH_ERR);
-	pipex.prefix = get_prefix(pipex.path);
-	if (!pipex.prefix)
-		return (1);//free everything and exit
+	{
+		free_pipex(&pipex);
+		perror_exit(NULL);
+	}
 	parse_cmd_for_exec(&pipex, argv);
 	launch_processes(&pipex, envp);
 	free_pipex(&pipex);

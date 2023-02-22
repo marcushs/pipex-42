@@ -17,21 +17,22 @@ typedef struct s_pipex
 	int		infile;
 	int		outfile;
 	char	**path;
-	char	*prefix;
 	char	**cmd1_strs;
 	char	**cmd2_strs;
 	char	*cmd1;
 	char	*cmd2;
 	int		*fd;
+	pid_t	pid1;
+	pid_t	pid2;
 }				t_pipex;
 
 int		check_args(int argc, char **argv);
 void	parse_cmd_for_exec(t_pipex *pipex, char **argv);
-int		check_bin(char *cmd);
+char	*check_bin(char *cmd, char **path);
 char	**find_path(char **envp);
-char	*get_prefix(char **strs);
 void	launch_processes(t_pipex *pipex, char **envp);
 int		find_2d_arr_size(void **arr);
+int		wait_status(t_pipex *pipex, int pid);
 //free
 void	free_2d_arr(void **arr);
 void	print_msg_exit(char *msg);

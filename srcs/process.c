@@ -26,45 +26,68 @@ int	*get_fd()
 
 void	first_child(t_pipex *pipex, char **envp)
 {
+	int	err;
 	close(pipex->fd[0]);
-	dup2(pipex->infile, STDIN_FILENO);
-	dup2(pipex->fd[1], STDOUT_FILENO);
+	if (dup2(pipex->infile, STDIN_FILENO) == -1)
+	{
+		free_pipex(pipex);
+		perror_exit(NULL);
+	}
+	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+	{
+		free_pipex(pipex);
+		perror_exit(NULL);
+	}
 	execve(pipex->cmd1, pipex->cmd1_strs, envp);
+	err = errno;
+	strerror(err);
+	free_pipex(pipex);
+	exit(EXIT_FAILURE);
 }
 
 void	second_child(t_pipex *pipex, char **envp)
 {
+	int	err;
 	close(pipex->fd[1]);
-	dup2(pipex->fd[0], STDIN_FILENO);
-	dup2(pipex->outfile, STDOUT_FILENO);
+	if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
+	{
+		free_pipex(pipex);
+		perror_exit(NULL);
+	}
+	if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
+	{
+		free_pipex(pipex);
+		perror_exit(NULL);
+	}
 	execve(pipex->cmd2, pipex->cmd2_strs, envp);
+	err = errno;
+	strerror(err);
+	free_pipex(pipex);
+	exit(EXIT_FAILURE);
 }
 
 void	launch_processes(t_pipex *pipex, char **envp)
 {
-	pid_t	pid1;
-	pid_t	pid2;
-
 	pipex->fd = get_fd();
 	if (!pipex->fd)
 		free_pipex(pipex);
-	pid1 = fork();
-	if (pid1 == -1)
+	pipex->pid1 = fork();
+	if (pipex->pid1 == -1)
 	{
 		perror("Error forking process");
 		free_pipex(pipex);
 	}
-	if (pid1 == 0)
+	if (pipex->pid1 == 0)
 		first_child(pipex, envp);
-	pid2 = fork();
-	if (pid2 == -1)
+	pipex->pid2 = fork();
+	if (pipex->pid2 == -1)
 	{
 		perror("Error forking process");
 		free_pipex(pipex);
 	}
-	if (pid2 == 0)
+	if (pipex->pid2 == 0)
 		second_child(pipex, envp);
 	close_pipes(pipex->fd);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	wait_status(pipex, 1);
+	wait_status(pipex, 2);
 }

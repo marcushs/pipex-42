@@ -4,7 +4,7 @@ RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror
 LIB_FLAGS		=	-L libft -lft
 DIR_SRCS		=	./srcs/
-LIST_SRCS		=	pipex.c check_args.c parse.c free.c process.c
+LIST_SRCS		=	pipex.c check_args.c parse.c free.c process.c wait.c
 SRCS			=	${addprefix ${DIR_SRCS}, ${LIST_SRCS}}
 
 DIR_OBJS		=	.objs/

@@ -1,11 +1,29 @@
 #include "../includes/pipex.h"
 
-int	check_bin(char *cmd)
+char	*check_bin(char *cmd, char **path)
 {
-	if (access(cmd, X_OK) == -1)
+	char	*tmp;
+	char	*rtn_cmd;
+	int		i;
+
+	i = -1;
+	while (path[++i])
 	{
-		printf("Cant find command\n");
-		return (0);
+		tmp = ft_strjoin(path[i], "/");
+		if (!tmp)
+			return (NULL);
+		rtn_cmd = ft_strjoin(tmp, cmd);
+		if (!rtn_cmd)
+			return (free(tmp), tmp = NULL, NULL);
+		if (access(rtn_cmd, X_OK) == 0)
+			return (free(tmp), tmp = NULL, rtn_cmd);
+		else
+		{
+			free(tmp);
+			tmp = NULL;
+			free(rtn_cmd);
+			rtn_cmd = NULL;
+		}
 	}
-	return (1);
+	return (NULL);
 }
