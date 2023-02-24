@@ -1,4 +1,4 @@
-#include "../includes/pipex.h"
+#include "../../includes/pipex.h"
 
 int	wait_status(t_pipex *pipex, int	pid)
 {

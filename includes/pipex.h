@@ -26,6 +26,8 @@ typedef struct s_pipex
 	pid_t	pid2;
 }				t_pipex;
 
+
+
 int		check_args(int argc, char **argv);
 void	parse_cmd_for_exec(t_pipex *pipex, char **argv);
 char	*check_bin(char *cmd, char **path);

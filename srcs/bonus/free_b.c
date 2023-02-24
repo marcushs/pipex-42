@@ -1,4 +1,4 @@
-#include "../includes/pipex.h"
+#include "../../includes/pipex_b.h"
 
 void	free_prev_arr(void **arr, int i)
 {
@@ -41,15 +41,13 @@ void	print_msg_exit(char *msg)
 	exit(EXIT_FAILURE);
 }
 
-void	free_pipex(t_pipex *pipex)
+void	free_pipex(t_pipex_b *pipex)
 {
 	free_2d_arr((void **)&pipex->path);
-	free_2d_arr((void **)&pipex->cmd1_strs);
-	free_2d_arr((void **)&pipex->cmd2_strs);
-	free(pipex->cmd1);
-	pipex->cmd1 = NULL;
-	free(pipex->cmd2);
-	pipex->cmd2 = NULL;
-	free(pipex->fd);
-	pipex->fd = NULL;
+	free_2d_arr((void **)&pipex->cmds_strs);
+	free_2d_arr((void **)&pipex->cmds);
+	free_2d_arr((void **)&pipex->fds);
+	free(pipex->pids);
+	pipex->pids = NULL;
+
 }

@@ -1,4 +1,4 @@
-#include "../includes/pipex.h"
+#include "../../includes/pipex.h"
 
 t_pipex	init_pipex(void)
 {

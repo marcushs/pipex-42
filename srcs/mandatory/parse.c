@@ -1,4 +1,4 @@
-#include "../includes/pipex.h"
+#include "../../includes/pipex.h"
 
 int	find_2d_arr_size(void **arr)
 {

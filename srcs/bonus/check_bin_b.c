@@ -1,4 +1,4 @@
-#include "../includes/pipex.h"
+#include "../../includes/pipex_b.h"
 
 char	*check_bin(char *cmd, char **path)
 {
