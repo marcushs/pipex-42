@@ -8,7 +8,6 @@ t_pipex_b	init_pipex_b()
 	pipex.outfile = 0;
 	pipex.path = NULL;
 	pipex.cmds = NULL;
-	pipex.cmds_strs = NULL;
 	pipex.cmd_count = 0;
 	pipex.hd_idx = 0;
 	pipex.fds = NULL;
@@ -36,9 +35,16 @@ int	main(int argc, char **argv, char **envp)
 		// 	free_pipex(&pipex);
 		// 	strerror_exit();
 		// }
-		parse_cmd_for_exec(&pipex, argv, argc);
-		for (int i = 0; i < pipex.cmd_count; i++)
-			printf("%s\n", pipex.cmds_strs[i]);
+		pipex.cmds = args_to_lst(&pipex, argv);
+		//if (!pipex.cmds)
+		// for (int i = 0; i < pipex.cmd_count; i++)
+		// {
+		// 	for (int j = 0; pipex.cmds->cmd_strs[i][j]; j++)
+		// 		printf("%s ", pipex.cmds->cmd_strs[i][j]);
+		// 	printf("\n");
+		// }
+
+		//free_2d_arr(pipex.cmds_strs);
 		free_pipex(&pipex);
 	}
 }
