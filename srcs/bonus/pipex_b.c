@@ -24,11 +24,7 @@ int	main(int argc, char **argv, char **envp)
 		pipex = init_pipex_b();
 		pipex.cmd_count = argc - 3;
 		pipex.infile = open(argv[1], O_RDONLY);
-		// if (pipex.infile == -1)
-		// 	strerror_exit();
 		pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
-		// if (pipex.outfile == -1)
-		// 	strerror_exit();
 		pipex.path = find_path(envp);
 		// if (!pipex.path)
 		// {
