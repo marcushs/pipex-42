@@ -1,18 +1,15 @@
 #include "../../includes/pipex_b.h"
 
-t_pipex_b	init_pipex_b()
+void	init_pipex_b(t_pipex_b *pipex)
 {
-	t_pipex_b	pipex;
-	
-	pipex.infile = 0;
-	pipex.outfile = 0;
-	pipex.path = NULL;
-	pipex.cmds = NULL;
-	pipex.cmd_count = 0;
-	pipex.hd_idx = 0;
-	pipex.fds = NULL;
-	pipex.pids = NULL;
-	return (pipex);
+	pipex->infile = 0;
+	pipex->outfile = 0;
+	pipex->path = NULL;
+	pipex->cmds = NULL;
+	pipex->cmd_count = 0;
+	pipex->hd_idx = 0;
+	pipex->fds = NULL;
+	pipex->pids = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -21,7 +18,7 @@ int	main(int argc, char **argv, char **envp)
 	
 	if (argc >= 5)
 	{
-		pipex = init_pipex_b();
+		init_pipex_b(&pipex);
 		pipex.cmd_count = argc - 3;
 		pipex.infile = open(argv[1], O_RDONLY);
 		pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
@@ -41,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 		// }
 
 		//free_2d_arr(pipex.cmds_strs);
+		lst_print(pipex.cmds);
 		free_pipex(&pipex);
 	}
 }

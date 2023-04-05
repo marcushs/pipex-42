@@ -39,4 +39,5 @@ void	dup_argv_cmds_strs(t_pipex_b *pipex, char **argv);
 void	lst_clear(t_cmds **head, void(*f)(void **));
 void	lst_addback(t_cmds **head, char *arg, int index);
 t_cmds	*args_to_lst(t_pipex_b *pipex, char **argv);
+void	lst_print(t_cmds *head);
 #endif

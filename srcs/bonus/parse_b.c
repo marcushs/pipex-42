@@ -23,7 +23,7 @@ t_cmds	*args_to_lst(t_pipex_b *pipex, char **argv)
 	t_cmds	*head;
 	int		i;
 	int		j;
-	char	**tmp;
+	//char	**tmp;
 
 	head = NULL;
 	i = 2 + pipex->hd_idx;
