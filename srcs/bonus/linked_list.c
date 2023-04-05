@@ -57,3 +57,24 @@ void	lst_addback(t_cmds **head, char *arg, int index)
 	else
 		lst_clear(head, &free_2d_arr);
 }
+
+void	lst_print(t_cmds *head)
+{
+	t_cmds	*tmp;
+	int		i = 0;
+
+	tmp = head;
+	while (tmp)
+	{
+		head = tmp->next;
+		printf("Index: %d, ", tmp->index);
+		while (tmp->cmd_strs[i])
+		{
+			printf("%s ", tmp->cmd_strs[i]);
+			i++;
+		}
+		i = 0;
+		printf("\n");
+		tmp = head;
+	}
+}
