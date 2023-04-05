@@ -23,7 +23,7 @@ typedef struct s_pipex_b
 	char	**path;
 	t_cmds	*cmds;
 	int		cmd_count;
-	int		**fds;
+	int		*fd;
 	int		hd_idx;
 	pid_t	*pids;
 }				t_pipex_b;

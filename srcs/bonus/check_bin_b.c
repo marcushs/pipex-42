@@ -6,6 +6,8 @@ char	*check_bin(char *cmd, char **path)
 	char	*rtn_cmd;
 	int		i;
 
+	if (access(cmd, X_OK) == 0)
+		return (cmd);
 	i = -1;
 	while (path[++i])
 	{
