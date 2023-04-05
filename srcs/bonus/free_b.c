@@ -44,7 +44,7 @@ void	print_msg_exit(char *msg)
 void	free_pipex(t_pipex_b *pipex)
 {
 	free_2d_arr((void **)&pipex->path);
-	free_2d_arr((void **)&pipex->cmds);
+	lst_clear(&pipex->cmds, &free_2d_arr);
 	free_2d_arr((void **)&pipex->fds);
 	free(pipex->pids);
 	pipex->pids = NULL;
