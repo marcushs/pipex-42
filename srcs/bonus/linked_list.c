@@ -58,6 +58,20 @@ void	lst_addback(t_cmds **head, char *arg, int index)
 		lst_clear(head, &free_2d_arr);
 }
 
+t_cmds	*find_cmd(t_cmds *head, int idx)
+{
+	t_cmds	*tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		head = tmp->next;
+		if (idx == tmp->index)
+			return (tmp);
+	}
+	return (NULL);
+}
+
 void	lst_print(t_cmds *head)
 {
 	t_cmds	*tmp;
