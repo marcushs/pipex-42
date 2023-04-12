@@ -43,19 +43,17 @@ void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 {
 	t_cmds	*cmd;
 
-	pipex->fd = get_fd();
 	if (idx == 0)
 		dup2s(pipex, pipex->infile, pipex->fd[1]);
 	else if (idx == pipex->cmd_count - 1)
 		dup2s(pipex, pipex->fd[0], pipex->outfile);
-	// else
-	// 	dup2s(pipex, pipex->fd[], pipex->fd[]);
+	else
+		dup2(pipex, pipex->fd[0], STDOUT_FILENO);
 	close_pipes(pipex->fd);
 	cmd = find_cmd(pipex->cmds, idx);
 	if (!cmd)
 		free_pipex_exit(pipex);
 	execve(cmd->cmd, cmd->cmd_strs, envp);
-
 
 }
 
@@ -66,6 +64,7 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 	pipex->pids = get_pids(pipex->cmd_count);
 	if (!pipex->pids)
 		free_pipex(pipex);
+	pipex->fd = get_fd();
 	i = -1;
 	while (++i < pipex->cmd_count)
 	{
@@ -74,6 +73,7 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 			free_pipex(pipex);
 		if (pipex->pids[i] == 0)
 			child_processes(pipex, envp, i);
+		dup2(pipex->pid)
 	}
 	close_pipes(pipex->fd);
 	wait_status(pipex, 1);

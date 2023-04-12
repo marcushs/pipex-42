@@ -29,7 +29,6 @@ typedef struct s_pipex_b
 	pid_t	*pids;
 }				t_pipex_b;
 
-
 char	**find_path(char **envp);
 char	*check_bin(char *cmd, char **path);
 void	free_2d_arr(void **arr);

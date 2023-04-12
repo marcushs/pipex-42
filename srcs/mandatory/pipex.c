@@ -26,11 +26,6 @@ int	main(int argc, char **argv, char **envp)
 	pipex.infile = open(argv[1], O_RDONLY);
 	pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
 	pipex.path = find_path(envp);
-	if (!pipex.path)
-	{
-		free_pipex(&pipex);
-		strerror_exit();
-	}
 	parse_cmd_for_exec(&pipex, argv);
 	launch_processes(&pipex, envp);
 	free_pipex(&pipex);

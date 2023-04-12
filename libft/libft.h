@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcus <marcus@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 14:23:25 by hleung            #+#    #+#             */
-/*   Updated: 2023/02/19 20:24:32 by marcus           ###   ########lyon.fr   */
+/*   Updated: 2023/04/12 17:10:37 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 int		ft_toupper(int c);
 int		ft_tolower(int c);
 char	*ft_strchr(const char *s, int c);
+int		ft_strchr_int(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*ft_memchr(const void *s, int c, size_t n);

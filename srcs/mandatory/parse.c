@@ -15,6 +15,8 @@ char	**find_path(char **envp)
 	char	**strs;
 	int		i;
 
+	if (!envp)
+		return (NULL);
 	i = -1;
 	while (envp[++i])
 	{
@@ -35,15 +37,5 @@ void	parse_cmd_for_exec(t_pipex *pipex, char **argv)
 	if (!pipex->cmd1_strs || !pipex->cmd2_strs)
 		free_pipex(pipex);
 	pipex->cmd1 = check_bin(pipex->cmd1_strs[0], pipex->path);
-	if (!pipex->cmd1)
-	{
-		free_pipex(pipex);
-		exit(EXIT_FAILURE);
-	}
 	pipex->cmd2 = check_bin(pipex->cmd2_strs[0], pipex->path);
-	if (!pipex->cmd2)
-	{
-		free_pipex(pipex);
-		exit(EXIT_FAILURE);
-	}
 }

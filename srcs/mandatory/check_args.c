@@ -1,32 +1,52 @@
 #include "../../includes/pipex.h"
 
-char	*check_bin(char *cmd, char **path)
+char	*join_strs(char *path, char *cmd)
 {
 	char	*tmp;
 	char	*rtn_cmd;
-	int		i;
 
-	if (access(cmd, X_OK) == 0)
-		return (cmd);
-	i = -1;
-	while (path[++i])
+	tmp = ft_strjoin(path, "/");
+	if (!tmp)
+		return (NULL);
+	rtn_cmd = ft_strjoin(tmp, cmd);
+	if (!rtn_cmd)
+		return (free(tmp), tmp = NULL, NULL);
+	return (rtn_cmd);
+}
+int	check_full_path(char *cmd)
+{
+	if (ft_strchr_int(cmd, '/'))
 	{
-		tmp = ft_strjoin(path[i], "/");
-		if (!tmp)
-			return (NULL);
-		rtn_cmd = ft_strjoin(tmp, cmd);
-		if (!rtn_cmd)
-			return (free(tmp), tmp = NULL, NULL);
-		if (access(rtn_cmd, X_OK) == 0)
-			return (free(tmp), tmp = NULL, rtn_cmd);
+		if (access(cmd, X_OK) == 0)
+			return (1);
 		else
 		{
-			free(tmp);
-			tmp = NULL;
+			ft_printf("command not found: %s\n", cmd);
+			return (0);
+		}
+	}
+	re
+}
+
+char	*check_bin(char *cmd, char **path)
+{
+	char	*rtn_cmd;
+	int		i;
+
+	if (check_full_path(cmd))
+		return (cmd);
+	i = -1;
+	while (path && path[++i])
+	{
+		rtn_cmd = join_strs(path[i], cmd);
+		if (access(rtn_cmd, X_OK) == 0)
+			return (rtn_cmd);
+		else
+		{
 			free(rtn_cmd);
 			rtn_cmd = NULL;
 		}
 	}
-	perror("Command not found");
+	ft_printf("command not found: %s\n", cmd);
 	return (NULL);
 }
