@@ -28,6 +28,6 @@ t_cmds	*args_to_lst(t_pipex_b *pipex, char **argv)
 	i = 2 + pipex->hd_idx;
 	j = -1;
 	while (++j < pipex->cmd_count)
-		lst_addback(&head, argv[i++], j);
+		lst_addback(&head, argv[i++], j, pipex->path);
 	return (head);
 }

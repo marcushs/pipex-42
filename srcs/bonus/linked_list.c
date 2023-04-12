@@ -1,6 +1,6 @@
 #include "../../includes/pipex_b.h"
 
-static t_cmds	*lst_new(char *arg, int index)
+static t_cmds	*lst_new(char *arg, int index, char **path)
 {
 	t_cmds	*new;
 
@@ -10,6 +10,9 @@ static t_cmds	*lst_new(char *arg, int index)
 	new->cmd_strs = ft_split(arg, ' ');
 	if (!new->cmd_strs)
 		return (free(new), new = NULL, NULL);
+	new->cmd = check_bin(new->cmd_strs[0], path);
+	if (!new->cmd)
+		return (NULL);
 	new->index = index;
 	new->next = NULL;
 	return (new);
@@ -31,6 +34,8 @@ void	lst_clear(t_cmds **head, void(*f)(void **))
 	tmp = *head;
 	while (tmp)
 	{
+		free(tmp->cmd);
+		tmp->cmd = NULL;
 		f((void **)&tmp->cmd_strs);
 		tmp = tmp->next;
 		free(*head);
@@ -38,12 +43,12 @@ void	lst_clear(t_cmds **head, void(*f)(void **))
 	}
 }
 
-void	lst_addback(t_cmds **head, char *arg, int index)
+void	lst_addback(t_cmds **head, char *arg, int index, char **path)
 {
 	t_cmds	*new;
 	t_cmds	*last;
 
-	new = lst_new(arg, index);
+	new = lst_new(arg, index, path);
 	if (new)
 	{
 		if (!*head)

@@ -54,7 +54,7 @@ void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 	cmd = find_cmd(pipex->cmds, idx);
 	if (!cmd)
 		free_pipex_exit(pipex);
-	execve(cmd->)
+	execve(cmd->cmd, cmd->cmd_strs, envp);
 
 
 }
