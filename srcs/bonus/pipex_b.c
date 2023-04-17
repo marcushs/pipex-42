@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_b.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/17 14:17:55 by hleung            #+#    #+#             */
+/*   Updated: 2023/04/17 14:37:03 by hleung           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/pipex_b.h"
 
 void	init_pipex_b(t_pipex_b *pipex)
@@ -21,6 +33,8 @@ int	main(int argc, char **argv, char **envp)
 		init_pipex_b(&pipex);
 		pipex.cmd_count = argc - 3;
 		pipex.infile = open(argv[1], O_RDONLY);
+		if (pipex.infile == -1)
+			ft_printf("No such file or directory: %s\n", argv[1]);
 		pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
 		pipex.path = find_path(envp);
 		if (!pipex.path)
