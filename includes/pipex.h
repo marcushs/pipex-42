@@ -9,8 +9,6 @@
 #include <errno.h>
 #include "../libft/libft.h"
 #define ARG_NUM_ERR "Wrong number of argument\n"
-#define OPEN_ERR "Error opening file"
-#define PATH_ERR "Error cannot find the right path\n"
 
 typedef struct s_pipex
 {

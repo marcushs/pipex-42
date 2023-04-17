@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wait.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/17 13:56:42 by hleung            #+#    #+#             */
+/*   Updated: 2023/04/17 14:01:18 by hleung           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/pipex.h"
 
-int	wait_status(t_pipex *pipex, int	pid)
+int	wait_status(t_pipex *pipex, int pid)
 {
 	int	wstatus;
 	int	id;

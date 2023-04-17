@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/17 13:56:23 by hleung            #+#    #+#             */
+/*   Updated: 2023/04/17 14:02:50 by hleung           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/pipex.h"
 
-void	close_pipes(int	*fd)
+static void	close_pipes(int	*fd)
 {
 	close(fd[0]);
 	close(fd[1]);
 }
 
-int	*get_fd()
+static int	*get_fd(void)
 {
 	int	*fd;
 
@@ -24,9 +36,8 @@ int	*get_fd()
 	return (fd);
 }
 
-void	first_child(t_pipex *pipex, char **envp)
+static void	first_child(t_pipex *pipex, char **envp)
 {
-	// int	err;
 	close(pipex->fd[0]);
 	if (dup2(pipex->infile, STDIN_FILENO) == -1)
 	{
@@ -38,16 +49,13 @@ void	first_child(t_pipex *pipex, char **envp)
 		free_pipex(pipex);
 		strerror_exit();
 	}
+	if (!pipex->cmd1)
+		exit(0);
 	execve(pipex->cmd1, pipex->cmd1_strs, envp);
-	// err = errno;
-	// strerror(err);
-	// free_pipex(pipex);
-	// exit(err);
 }
 
-void	second_child(t_pipex *pipex, char **envp)
+static void	second_child(t_pipex *pipex, char **envp)
 {
-	// int	err;
 	close(pipex->fd[1]);
 	if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
 	{
@@ -59,12 +67,9 @@ void	second_child(t_pipex *pipex, char **envp)
 		free_pipex(pipex);
 		strerror_exit();
 	}
-	printf("%s\n", pipex->cmd2);
+	if (!pipex->cmd2)
+		exit(0);
 	execve(pipex->cmd2, pipex->cmd2_strs, envp);
-	// err = errno;
-	// strerror(err);
-	// free_pipex(pipex);
-	// exit(err);
 }
 
 void	launch_processes(t_pipex *pipex, char **envp)
