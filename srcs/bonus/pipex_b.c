@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:55 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/18 13:54:28 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/18 14:51:41 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 		// 	printf("%s ", cmd->cmd);
 		// }
 		// printf("\n");
-		// free_pipex(&pipex);
+		free_pipex(&pipex);
 		return (0);
 	}
 }

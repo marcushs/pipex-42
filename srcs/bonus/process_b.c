@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/18 13:59:55 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/18 14:53:50 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,7 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 			free_pipex_exit(pipex);
 		close_pipes(pipex->fd);
 		wait(NULL);
+		free(pipex->fd);
+		pipex->fd = NULL;
 	}
 }
