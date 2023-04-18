@@ -3,19 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: marcus <marcus@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 14:23:25 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/12 17:10:37 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/18 20:06:18 by marcus           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdint.h>
 # include <stdarg.h>
+# include <fcntl.h>
 
 typedef struct s_list
 {
@@ -75,4 +79,6 @@ int		ft_putnbr_unsigned(unsigned int n);
 int		ft_putnbr_base(int n, char *charset);
 int		ft_putadd(unsigned long nbr, char *charset);
 int		ft_printf(const char *arg, ...);
+//get_next_line
+char	*get_next_line(int fd);
 #endif
