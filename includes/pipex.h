@@ -37,4 +37,5 @@ void	print_msg_exit(char *msg);
 void	strerror_exit(void);
 void	free_pipex(t_pipex *pipex);
 void	free_prev_arr(void **arr, int i);
+void	free_pipex_exit(t_pipex_b *pipex);
 #endif

@@ -35,8 +35,10 @@ void	free_2d_arr(void **arr);
 void	free_pipex(t_pipex_b *pipex);
 void	free_pipex_exit(t_pipex_b *pipex);
 void	lst_clear(t_cmds **head, void(*f)(void **));
-void	lst_addback(t_cmds **head, char *arg, int index);
+void	lst_addback(t_cmds **head, char *arg, int index, char **path);
 t_cmds	*args_to_lst(t_pipex_b *pipex, char **argv);
 void	lst_print(t_cmds *head);
 t_cmds	*find_cmd(t_cmds *head, int idx);
+void	launch_processes(t_pipex_b *pipex, char **envp);
+int		wait_status(t_pipex_b *pipex, int pid);
 #endif

@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:56:05 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/17 13:56:07 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/18 11:52:48 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,9 @@ void	free_pipex(t_pipex *pipex)
 	pipex->cmd2 = NULL;
 	free(pipex->fd);
 	pipex->fd = NULL;
+}
+void	free_pipex_exit(t_pipex_b *pipex)
+{
+	free_pipex(pipex);
+	exit(0);
 }
