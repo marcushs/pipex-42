@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/18 12:22:26 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/18 13:59:55 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ int	*get_pids(int cmd_count)
 
 void	dup2s(t_pipex_b *pipex, int rd, int wr)
 {
+	close(pipex->fd[0]);
 	if (dup2(rd, STDIN_FILENO) == -1)
 		free_pipex_exit(pipex);
-	close(pipex->fd[0]);
 	if (dup2(wr, STDOUT_FILENO) == -1)
 		free_pipex_exit(pipex);
 }
@@ -89,20 +89,20 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 	pipex->pids = get_pids(pipex->cmd_count);
 	if (!pipex->pids)
 		free_pipex_exit(pipex);
-	pipex->fd = get_fd();
 	i = -1;
 	while (++i < pipex->cmd_count)
 	{
+		pipex->fd = get_fd();
+		if (!pipex->fd)
+			free_pipex_exit(0);
 		pipex->pids[i] = fork();
 		if (pipex->pids[i] == -1)
 			free_pipex(pipex);
 		if (pipex->pids[i] == 0)
 			child_processes(pipex, envp, i);
-		if (dup2(STDIN_FILENO, pipex->fd[0]) == -1)
+		if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
 			free_pipex_exit(pipex);
-	}
-	i = -1;
-	while (++i < pipex->cmd_count)
+		close_pipes(pipex->fd);
 		wait(NULL);
-	close_pipes(pipex->fd);
+	}
 }

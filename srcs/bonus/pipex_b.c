@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:55 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/18 12:00:40 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/18 13:54:28 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char **envp)
 		pipex.infile = open(argv[1], O_RDONLY);
 		if (pipex.infile == -1)
 			ft_printf("No such file or directory: %s\n", argv[1]);
-		if (access(argv[1], R_OK) == -1)
+		if (pipex.infile != -1 && access(argv[1], R_OK) == -1)
 			ft_printf("Cannot open %s: Permission denied\n", argv[1]);
 		pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
 		if (pipex.outfile && access(argv[argc - 1], R_OK) == -1)
@@ -45,7 +45,16 @@ int	main(int argc, char **argv, char **envp)
 		if (!pipex.cmds)
 			free_pipex_exit(&pipex);
 		launch_processes(&pipex, envp);
-		//lst_print(pipex.cmds);
-		free_pipex(&pipex);
+		// lst_print(pipex.cmds);
+		// for (int i = 0; i < pipex.cmd_count; i++)
+		// {
+		// 	t_cmds	*cmd;
+
+		// 	cmd = find_cmd(pipex.cmds, i);
+		// 	printf("%s ", cmd->cmd);
+		// }
+		// printf("\n");
+		// free_pipex(&pipex);
+		return (0);
 	}
 }

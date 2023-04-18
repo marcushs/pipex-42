@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:45 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/17 14:17:46 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/18 13:51:39 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_cmds	*find_cmd(t_cmds *head, int idx)
 		head = tmp->next;
 		if (idx == tmp->index)
 			return (tmp);
+		tmp = head;
 	}
 	return (NULL);
 }
