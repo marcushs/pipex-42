@@ -9,7 +9,7 @@ LIST_M_SRCS		=	pipex.c check_bin.c parse.c free.c process.c wait.c
 M_SRCS			=	${addprefix ${DIR_M_SRCS}, ${LIST_M_SRCS}}
 
 DIR_B_SRCS		=	./srcs/bonus/
-LIST_B_SRCS		=	pipex_b.c parse_b.c check_bin_b.c free_b.c linked_list.c process_b.c wait_b.c
+LIST_B_SRCS		=	pipex_b.c parse_b.c check_bin_b.c free_b.c linked_list.c process_b.c wait_b.c here_doc.c
 B_SRCS			=	${addprefix ${DIR_B_SRCS}, ${LIST_B_SRCS}}
 
 DIR_M_OBJS		=	.objs/

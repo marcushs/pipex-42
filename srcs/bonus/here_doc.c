@@ -10,28 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int	*get_fd(void)
-{
-	int	*fd;
+#include "../../includes/pipex_b.h"
 
-	fd = (int *)malloc(sizeof(int) * 2);
-	if (!fd)
-	{
-		perror("Malloc error");
-		return (NULL);
-	}
-	if (pipe(fd) == -1)
-	{
-		perror("Error opening pipe");
-		return (NULL);
-	}
-	return (fd);
+static char	*ft_join_line(char *s1, char *s2)
+{
+	char	*join;
+	size_t	i;
+	size_t	j;
+	size_t	s2_len;
+
+	s2_len = ft_strlen(s2);
+	if (!s1)
+		join = (char *)malloc(s2_len + 1);
+	else
+		join = (char *)malloc(ft_strlen(s1) + s2_len + 1);
+	i = 0;
+	j = 0;
+	while (s1 && s1[j])
+		join[i++] = s1[j++];
+	j = 0;
+	while (j < s2_len)
+		join[i++] = s2[j++];
+	join[i] = 0;
+	return (join);
 }
 
-void	start_heredoc(void)
+char	*start_here_doc(char *limiter)
 {
-	int	*fd;
+	char	*line;
+	char	*rtn_str;
 
-	fd = get_fd();
-	
+	while (1)
+	{
+		ft_printf("pipe heredoc> ");
+		line = get_next_line(0);
+		rtn_str = ft_join_line(rtn_str, line);
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+			return (free(line), line = NULL, rtn_str);
+		free(line);
+	}
 }
