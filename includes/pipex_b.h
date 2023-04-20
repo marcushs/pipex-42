@@ -41,5 +41,7 @@ void	lst_print(t_cmds *head);
 t_cmds	*find_cmd(t_cmds *head, int idx);
 void	launch_processes(t_pipex_b *pipex, char **envp);
 int		wait_status(t_pipex_b *pipex, int pid);
-char	*start_here_doc(char *limiter);
+void	start_here_doc(char *limiter);
+int		*get_fd(void);
+void	free_null_exit(char **str);
 #endif

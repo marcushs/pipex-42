@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:55 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/18 14:51:41 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/20 13:26:26 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)envp;
-	char *str;
 // 	t_pipex_b	pipex;
 	
 // 	if (argc >= 5)
@@ -52,7 +51,6 @@ int	main(int argc, char **argv, char **envp)
 // 		return (0);
 // 	}
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		str = start_here_doc(argv[2]);
-	ft_printf("%s", str);
+		start_here_doc(argv[2]);
 	return (0);
 }
