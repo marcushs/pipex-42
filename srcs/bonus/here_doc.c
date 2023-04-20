@@ -32,24 +32,27 @@ static char	*ft_join_line(char *s1, char *s2)
 	while (j < s2_len)
 		join[i++] = s2[j++];
 	join[i] = 0;
-	return (join);
+	return (free(s1), s1 = NULL, join);
 }
 
-void	write_str_to_pipe(char *str)
+void	write_str_to_pipe(t_pipex_b *pipex, char *str)
 {
-	int	*fd;
-
-	fd = get_fd();
-	dup2(STDOUT_FILENO, fd[1]);
-	if (write(fd[1], str, ft_strlen(str)) == -1)
-		ft_printf("cant write\n");
-	close(fd[0]);
-	close(fd[1]);
-	free(fd);
+	pipex->fd = get_fd();
+	dup2(pipex->fd[0], STDIN_FILENO);
+	if (write(pipex->fd[1], str, ft_strlen(str)) == -1)
+	{
+		free(str);
+		free_pipex_exit(pipex);
+	}
+	close(pipex->fd[1]);
+	close(pipex->fd[0]);
+	free(pipex->fd);
+	pipex->fd = NULL;
 	free(str);
+	str = NULL;
 }
 
-void	start_here_doc(char *limiter)
+char	*start_here_doc(char *limiter)
 {
 	char	*line;
 	char	*rtn_str;
@@ -60,17 +63,34 @@ void	start_here_doc(char *limiter)
 		ft_printf("pipe heredoc> ");
 		line = get_next_line(0);
 		if (!line)
-			exit(0);
+			return (NULL);
 		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
-		{
-			free(line);
-			line = NULL;
-			write_str_to_pipe(rtn_str);
-			exit(0);
-		}
+			return (free(line), line = NULL, rtn_str);
 		rtn_str = ft_join_line(rtn_str, line);
 		if (!rtn_str)
-			free_null_exit(&line);
+			return (free(line), line = NULL, NULL);
 		free(line);
 	}
+}
+
+void	launch_heredoc_process(t_pipex_b *pipex, int argc, char **argv, char **envp)
+{
+	char	*str;
+
+	pipex->hd_idx = 1;
+	pipex->cmd_count = argc - 4;
+	str = start_here_doc(argv[2]);
+	if (!str)
+		free_pipex_exit(pipex);
+	pipex->outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
+	if (pipex->outfile && access(argv[argc - 1], R_OK) == -1)
+		ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
+	pipex->path = find_path(envp);
+	pipex->cmds = args_to_lst(pipex, argv);
+	if (!pipex->cmds)
+		free_pipex_exit(pipex);
+	write_str_to_pipe(pipex, str);
+	launch_processes(pipex, envp);
+	free_pipex(pipex);
+	exit(EXIT_SUCCESS);
 }

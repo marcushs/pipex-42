@@ -26,31 +26,29 @@ void	init_pipex_b(t_pipex_b *pipex)
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argc;
-	(void)envp;
-// 	t_pipex_b	pipex;
-	
-// 	if (argc >= 5)
-// 	{
-// 		init_pipex_b(&pipex);
-// 		pipex.cmd_count = argc - 3;
-// 		pipex.infile = open(argv[1], O_RDONLY);
-// 		if (pipex.infile == -1)
-// 			ft_printf("No such file or directory: %s\n", argv[1]);
-// 		if (pipex.infile != -1 && access(argv[1], R_OK) == -1)
-// 			ft_printf("Cannot open %s: Permission denied\n", argv[1]);
-// 		pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
-// 		if (pipex.outfile && access(argv[argc - 1], R_OK) == -1)
-// 			ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
-// 		pipex.path = find_path(envp);
-// 		pipex.cmds = args_to_lst(&pipex, argv);
-// 		if (!pipex.cmds)
-// 			free_pipex_exit(&pipex);
-// 		launch_processes(&pipex, envp);
-// 		free_pipex(&pipex);
-// 		return (0);
-// 	}
-	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		start_here_doc(argv[2]);
+	t_pipex_b	pipex;
+
+	if (argc >= 5)
+	{
+		init_pipex_b(&pipex);
+		pipex.cmd_count = argc - 3;
+		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+				launch_heredoc_process(&pipex, argc, argv, envp);
+		pipex.infile = open(argv[1], O_RDONLY);
+		if (pipex.infile == -1)
+			ft_printf("No such file or directory: %s\n", argv[1]);
+		if (pipex.infile != -1 && access(argv[1], R_OK) == -1)
+			ft_printf("Cannot open %s: Permission denied\n", argv[1]);
+		pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
+		if (pipex.outfile && access(argv[argc - 1], R_OK) == -1)
+			ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
+		pipex.path = find_path(envp);
+		pipex.cmds = args_to_lst(&pipex, argv);
+		if (!pipex.cmds)
+			free_pipex_exit(&pipex);
+		launch_processes(&pipex, envp);
+		free_pipex(&pipex);
+		return (0);
+	}
 	return (0);
 }

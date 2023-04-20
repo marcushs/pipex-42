@@ -51,11 +51,14 @@ int	*get_pids(int cmd_count)
 
 void	dup2s(t_pipex_b *pipex, int rd, int wr)
 {
-	close(pipex->fd[0]);
-	if (dup2(rd, STDIN_FILENO) == -1)
-		free_pipex_exit(pipex);
-	if (dup2(wr, STDOUT_FILENO) == -1)
-		free_pipex_exit(pipex);
+	if (!pipex->hd_idx)
+	{
+		close(pipex->fd[0]);
+		if (dup2(rd, STDIN_FILENO) == -1)
+			free_pipex_exit(pipex);
+		if (dup2(wr, STDOUT_FILENO) == -1)
+			free_pipex_exit(pipex);
+	}
 }
 
 void	child_processes(t_pipex_b *pipex, char **envp, int idx)
@@ -63,7 +66,12 @@ void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 	t_cmds	*cmd;
 
 	if (idx == 0)
-		dup2s(pipex, pipex->infile, pipex->fd[1]);
+	{
+		if (!pipex->hd_idx)
+			dup2s(pipex, pipex->infile, pipex->fd[1]);
+		if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+			free_pipex_exit(pipex);
+	}
 	else if (idx == pipex->cmd_count - 1)
 	{
 		close(pipex->fd[1]);
