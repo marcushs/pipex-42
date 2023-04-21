@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:45 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/21 10:29:51 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/21 14:14:23 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static t_cmds	*lst_new(char *arg, int index, char **path)
 	new = (t_cmds *)malloc(sizeof(t_cmds));
 	if (!new)
 		return (NULL);
+	new->cmd = NULL;
 	new->cmd_strs = ft_split(arg, ' ');
-	if (!new->cmd_strs)
-		return (free(new), new = NULL, NULL);
-	new->cmd = check_bin(new->cmd_strs[0], path);
+	if (new->cmd_strs)
+		new->cmd = check_bin(new->cmd_strs[0], path);	
 	new->index = index;
 	new->next = NULL;
 	return (new);
@@ -88,23 +88,3 @@ t_cmds	*find_cmd(t_cmds *head, int idx)
 	return (NULL);
 }
 
-void	lst_print(t_cmds *head)
-{
-	t_cmds	*tmp;
-	int		i = 0;
-
-	tmp = head;
-	while (tmp)
-	{
-		head = tmp->next;
-		printf("Index: %d, ", tmp->index);
-		while (tmp->cmd_strs[i])
-		{
-			printf("%s ", tmp->cmd_strs[i]);
-			i++;
-		}
-		i = 0;
-		printf("\n");
-		tmp = head;
-	}
-}

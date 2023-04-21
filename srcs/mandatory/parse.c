@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:59:14 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/17 14:15:52 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/21 13:48:16 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	parse_cmd_for_exec(t_pipex *pipex, char **argv)
 	if (!pipex->cmd1_strs || !pipex->cmd2_strs)
 	{
 		free_pipex(pipex);
-		exit(0);
+		exit(EXIT_FAILURE);
 	}
 	pipex->cmd1 = check_bin(pipex->cmd1_strs[0], pipex->path);
 	pipex->cmd2 = check_bin(pipex->cmd2_strs[0], pipex->path);

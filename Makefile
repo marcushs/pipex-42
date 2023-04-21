@@ -37,11 +37,11 @@ bonus:			${BONUS}
 
 ${NAME}:		${DIR_M_OBJS} ${M_OBJS} ${LIB_FILES} ${HEADER_FILES}
 				${MAKE} bonus -C ./libft
-				${CC} ${CFLAGS} ${M_OBJS} ${LIB_FLAGS} -o ${NAME}
+				${CC} ${CFLAGS} -g ${M_OBJS} ${LIB_FLAGS} -o ${NAME}
 
 ${BONUS}:		${DIR_B_OBJS} ${B_OBJS} ${LIB_FILES} ${HEADER_FILES}
 				${MAKE} bonus -C ./libft
-				${CC} ${CFLAGS} ${B_OBJS} ${LIB_FLAGS} -o ${BONUS}
+				${CC} ${CFLAGS} -g ${B_OBJS} ${LIB_FLAGS} -o ${BONUS}
 
 ${DIR_M_OBJS}:	
 				mkdir -p ${DIR_M_OBJS} 

@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 11:12:00 by hleung            #+#    #+#             */
-/*   Updated: 2022/11/23 13:43:44 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/21 14:03:49 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	**ft_split(char const *s, char c)
 {
 	char	**new_strs;
 
-	if (!s)
+	if (!s || s[0] == 0)
 		return (NULL);
 	new_strs = (char **)malloc(sizeof(char *) * (count_strings(s, c) + 1));
 	if (!new_strs)
