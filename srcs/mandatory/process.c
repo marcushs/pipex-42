@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:56:23 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/17 14:02:50 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/21 13:38:55 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	first_child(t_pipex *pipex, char **envp)
 		strerror_exit();
 	}
 	if (!pipex->cmd1)
-		exit(0);
+		exit(EXIT_FAILURE);
 	execve(pipex->cmd1, pipex->cmd1_strs, envp);
 }
 
@@ -68,7 +68,7 @@ static void	second_child(t_pipex *pipex, char **envp)
 		strerror_exit();
 	}
 	if (!pipex->cmd2)
-		exit(0);
+		exit(EXIT_FAILURE);
 	execve(pipex->cmd2, pipex->cmd2_strs, envp);
 }
 

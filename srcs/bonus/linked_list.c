@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:45 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/18 13:51:39 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/21 10:29:51 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ static t_cmds	*lst_new(char *arg, int index, char **path)
 	if (!new->cmd_strs)
 		return (free(new), new = NULL, NULL);
 	new->cmd = check_bin(new->cmd_strs[0], path);
-	if (!new->cmd)
-		return (NULL);
 	new->index = index;
 	new->next = NULL;
 	return (new);

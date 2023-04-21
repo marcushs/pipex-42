@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:55 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/20 13:26:26 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/21 11:46:12 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		init_pipex_b(&pipex);
 		pipex.cmd_count = argc - 3;
-		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+		if (ft_strcmp(argv[1], "here_doc") == 0)
 				launch_heredoc_process(&pipex, argc, argv, envp);
 		pipex.infile = open(argv[1], O_RDONLY);
 		if (pipex.infile == -1)
