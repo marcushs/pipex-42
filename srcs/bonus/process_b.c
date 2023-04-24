@@ -12,31 +12,7 @@
 
 #include "../../includes/pipex_b.h"
 
-static void	close_pipes(int	*fd)
-{
-	close(fd[0]);
-	close(fd[1]);
-}
-
-int	*get_fd(void)
-{
-	int	*fd;
-
-	fd = (int *)malloc(sizeof(int) * 2);
-	if (!fd)
-	{
-		perror("Malloc error");
-		return (NULL);
-	}
-	if (pipe(fd) == -1)
-	{
-		perror("Error opening pipe");
-		return (NULL);
-	}
-	return (fd);
-}
-
-int	*get_pids(int cmd_count)
+static int	*get_pids(int cmd_count)
 {
 	int	*pids;
 
@@ -48,49 +24,71 @@ int	*get_pids(int cmd_count)
 	}
 	return (pids);
 }
-
-void	dup2s(t_pipex_b *pipex, int rd, int wr)
+static void	close_pipes(int	fd[2])
 {
-	if (!pipex->hd_idx)
-	{
-		close(pipex->fd[0]);
-		if (dup2(rd, STDIN_FILENO) == -1)
-			free_pipex_exit(pipex);
-		if (dup2(wr, STDOUT_FILENO) == -1)
-			free_pipex_exit(pipex);
-	}
+	close(fd[0]);
+	close(fd[1]);
 }
 
-void	child_processes(t_pipex_b *pipex, char **envp, int idx)
+static void	dup2s(t_pipex_b *pipex)
 {
-	t_cmds	*cmd;
-
+	if (pipex->infile == -1)
+	{
+		close(pipex->fd[1]);
+		if (pipex->outfile != -1)
+			close(pipex->outfile);
+		free_pipex_exit(pipex);
+	}
+	if (dup2(pipex->infile, STDIN_FILENO) == -1)
+		free_pipex_exit(pipex);
+	close(pipex->infile);
+	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+		free_pipex_exit(pipex);
+	close(pipex->fd[1]);
+}
+static void	redirect_fd(t_pipex_b *pipex, int idx)
+{
 	if (idx == 0)
 	{
 		if (!pipex->hd_idx)
-			dup2s(pipex, pipex->infile, pipex->fd[1]);
-		if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+		{
+			close(pipex->fd[0]);
+			dup2s(pipex);
+		}
+		else if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
 			free_pipex_exit(pipex);
+		close(pipex->fd[1]);
 	}
 	else if (idx == pipex->cmd_count - 1)
 	{
 		close(pipex->fd[1]);
 		if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
 			free_pipex_exit(pipex);
+		close(pipex->outfile);
 	}
 	else
 	{
 		close(pipex->fd[0]);
 		if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
 			free_pipex_exit(pipex);
+		close(pipex->fd[1]);
 	}
+}
+void	child_processes(t_pipex_b *pipex, char **envp, int idx)
+{
+	t_cmds	*cmd;
+
+	redirect_fd(pipex, idx);
 	cmd = find_cmd(pipex->cmds, idx);
 	if (!cmd->cmd)
 		free_pipex_exit(pipex);
 	execve(cmd->cmd, cmd->cmd_strs, envp);
+	if (pipex->infile != -1)
+		close(pipex->infile);
+	if (pipex->outfile != -1)
+		close(pipex->outfile);
+	close_pipes(pipex->fd);
 	free_pipex_exit(pipex);
-	close(pipex->fd[0]);
-	close(pipex->fd[1]);
 }
 
 void	launch_processes(t_pipex_b *pipex, char **envp)
@@ -103,9 +101,8 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 	i = -1;
 	while (++i < pipex->cmd_count)
 	{
-		pipex->fd = get_fd();
-		if (!pipex->fd)
-			free_pipex_exit(0);
+		if (pipe(pipex->fd) == -1)
+			free_pipex_exit(pipex);
 		pipex->pids[i] = fork();
 		if (pipex->pids[i] == -1)
 			free_pipex(pipex);
@@ -115,7 +112,9 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 			free_pipex_exit(pipex);
 		close_pipes(pipex->fd);
 		wait(NULL);
-		free(pipex->fd);
-		pipex->fd = NULL;
 	}
+	if (pipex->infile != -1)
+		close(pipex->infile);
+	if (pipex->outfile != -1)
+		close(pipex->outfile);
 }

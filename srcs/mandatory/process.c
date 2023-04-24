@@ -12,29 +12,11 @@
 
 #include "../../includes/pipex.h"
 
-// static void	close_pipes(int	fd[2])
-// {
-// 	close(fd[0]);
-// 	close(fd[1]);
-// }
-
-// static int	*get_fd(void)
-// {
-// 	int	*fd;
-
-// 	fd = (int *)malloc(sizeof(int) * 2);
-// 	if (!fd)
-// 	{
-// 		perror("Malloc error");
-// 		return (NULL);
-// 	}
-// 	if (pipe(fd) == -1)
-// 	{
-// 		perror("Error opening pipe");
-// 		return (NULL);
-// 	}
-// 	return (fd);
-// }
+static void	close_pipes(int	fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
+}
 
 static void	first_child(t_pipex *pipex, int fd[2], char **envp)
 {
@@ -46,6 +28,7 @@ static void	first_child(t_pipex *pipex, int fd[2], char **envp)
 		close(fd[1]);
 		if (pipex->outfile != -1)
 			close(pipex->outfile);
+		free_pipex_exit(pipex);
 	}
 	if (dup2(pipex->infile, STDIN_FILENO) == -1)
 		free_pipex_exit(pipex);
@@ -56,6 +39,8 @@ static void	first_child(t_pipex *pipex, int fd[2], char **envp)
 	if (!pipex->cmd1)
 		exit(EXIT_FAILURE);
 	execve(pipex->cmd1, pipex->cmd1_strs, envp);
+	free_pipex_exit(pipex);
+	close_pipes(fd);
 }
 
 static void	second_child(t_pipex *pipex, int fd[2], char **envp)
@@ -73,6 +58,8 @@ static void	second_child(t_pipex *pipex, int fd[2], char **envp)
 	if (!pipex->cmd2)
 		exit(EXIT_FAILURE);
 	execve(pipex->cmd2, pipex->cmd2_strs, envp);
+	free_pipex_exit(pipex);
+	close_pipes(fd);
 }
 
 void	launch_processes(t_pipex *pipex, char **envp)
@@ -91,8 +78,7 @@ void	launch_processes(t_pipex *pipex, char **envp)
 		free_pipex_exit(pipex);
 	if (pipex->pid2 == 0)
 		second_child(pipex, fd, envp);
-	close(fd[0]);
-	close(fd[1]);
+	close_pipes(fd);
 	if (pipex->infile != -1)
 		close(pipex->infile);
 	if (pipex->outfile != -1)

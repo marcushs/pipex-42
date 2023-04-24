@@ -37,17 +37,15 @@ static char	*ft_join_line(char *s1, char *s2)
 
 void	write_str_to_pipe(t_pipex_b *pipex, char *str)
 {
-	pipex->fd = get_fd();
-	dup2(pipex->fd[0], STDIN_FILENO);
+	if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
+		free_pipex_exit(pipex);
+	close(pipex->fd[0]);
 	if (write(pipex->fd[1], str, ft_strlen(str)) == -1)
 	{
 		free(str);
 		free_pipex_exit(pipex);
 	}
 	close(pipex->fd[1]);
-	close(pipex->fd[0]);
-	free(pipex->fd);
-	pipex->fd = NULL;
 	free(str);
 	str = NULL;
 }
@@ -81,17 +79,19 @@ void	launch_heredoc_process(t_pipex_b *pipex, int argc, char **argv, char **envp
 
 	pipex->hd_idx = 1;
 	pipex->cmd_count = argc - 4;
+	if (pipe(pipex->fd) == -1)
+		free_pipex_exit(pipex);
 	str = start_here_doc(argv[2]);
 	if (!str)
 		free_pipex_exit(pipex);
 	pipex->outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
 	if (pipex->outfile && access(argv[argc - 1], R_OK) == -1)
 		ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
-	pipex->path = find_path(envp);
-	pipex->cmds = args_to_lst(pipex, argv);
 	if (!pipex->cmds)
 		free_pipex_exit(pipex);
 	write_str_to_pipe(pipex, str);
+	pipex->path = find_path(envp);
+	pipex->cmds = args_to_lst(pipex, argv);
 	launch_processes(pipex, envp);
 	free_pipex(pipex);
 	exit(EXIT_SUCCESS);

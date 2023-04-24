@@ -20,7 +20,6 @@ void	init_pipex_b(t_pipex_b *pipex)
 	pipex->cmds = NULL;
 	pipex->cmd_count = 0;
 	pipex->hd_idx = 0;
-	pipex->fd = NULL;
 	pipex->pids = NULL;
 }
 

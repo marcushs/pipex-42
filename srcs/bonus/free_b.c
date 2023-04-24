@@ -62,8 +62,6 @@ void	free_pipex(t_pipex_b *pipex)
 		close(pipex->infile);
 	if (pipex->outfile != -1)
 		close(pipex->outfile);
-	free(pipex->fd);
-	pipex->fd = NULL;
 	free(pipex->pids);
 	pipex->pids = NULL;
 }

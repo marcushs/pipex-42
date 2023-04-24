@@ -24,7 +24,7 @@ typedef struct s_pipex_b
 	char	**path;
 	t_cmds	*cmds;
 	int		cmd_count;
-	int		*fd;
+	int		fd[2];
 	int		hd_idx;
 	pid_t	*pids;
 }				t_pipex_b;
@@ -42,7 +42,6 @@ t_cmds	*find_cmd(t_cmds *head, int idx);
 void	launch_processes(t_pipex_b *pipex, char **envp);
 int		wait_status(t_pipex_b *pipex, int pid);
 char	*start_here_doc(char *limiter);
-int		*get_fd(void);
 void	free_null_exit(char **str);
 void	launch_heredoc_process(t_pipex_b *pipex, int argc, char **argv, char **envp);
 #endif
