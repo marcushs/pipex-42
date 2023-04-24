@@ -41,10 +41,15 @@ static void	first_child(t_pipex *pipex, int fd[2], char **envp)
 	close(fd[0]);
 	if (pipex->outfile != -1)
 		close(pipex->outfile);
+	if (pipex->infile == -1)
+	{
+		close(fd[1]);
+		if (pipex->outfile != -1)
+			close(pipex->outfile);
+	}
 	if (dup2(pipex->infile, STDIN_FILENO) == -1)
 		free_pipex_exit(pipex);
-	if (pipex->infile != -1)
-		close(pipex->infile);
+	close(pipex->infile);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		free_pipex_exit(pipex);
 	close(fd[1]);
@@ -86,7 +91,6 @@ void	launch_processes(t_pipex *pipex, char **envp)
 		free_pipex_exit(pipex);
 	if (pipex->pid2 == 0)
 		second_child(pipex, fd, envp);
-	// close_pipes(fd);
 	close(fd[0]);
 	close(fd[1]);
 	if (pipex->infile != -1)
