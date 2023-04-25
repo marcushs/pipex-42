@@ -6,11 +6,17 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:38 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 15:41:23 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/25 16:48:08 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_b.h"
+
+void	close_pipes(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
+}
 
 void	free_prev_arr(void **arr, int i)
 {
@@ -41,23 +47,10 @@ void	free_2d_arr(void **arr)
 	*arr = NULL;
 }
 
-void	free_null_exit(char **str)
-{
-	free(*str);
-	*str = NULL;
-	exit(0);
-}
-
-void	print_msg_exit(char *msg)
-{
-	ft_printf("%s", msg);
-	exit(EXIT_FAILURE);
-}
-
 void	free_pipex(t_pipex_b *pipex)
 {
 	free_2d_arr((void **)&pipex->path);
-	lst_clear(&pipex->cmds, &free_2d_arr);
+	lst_clear(&pipex->cmds);
 	if (pipex->infile != -1)
 		close(pipex->infile);
 	if (pipex->outfile != -1)

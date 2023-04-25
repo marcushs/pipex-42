@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 15:42:51 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/25 17:48:22 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,10 @@ static int	*get_pids(int cmd_count)
 	}
 	return (pids);
 }
-static void	close_pipes(int	fd[2])
-{
-	close(fd[0]);
-	close(fd[1]);
-}
 
 static void	dup2s(t_pipex_b *pipex)
 {
+	close(pipex->fd[0]);
 	if (pipex->infile == -1)
 	{
 		close(pipex->fd[1]);
@@ -46,21 +42,19 @@ static void	dup2s(t_pipex_b *pipex)
 		free_pipex_exit(pipex);
 	close(pipex->fd[1]);
 }
+
 static void	redirect_fd(t_pipex_b *pipex, int idx)
 {
 	if (idx == 0)
 	{
 		if (!pipex->hd_idx)
-		{
-			close(pipex->fd[0]);
 			dup2s(pipex);
-		}
 		else
 		{
 			if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
 				free_pipex_exit(pipex);
 			close(pipex->fd[1]);
-		} 
+		}
 	}
 	else if (idx == pipex->cmd_count - 1)
 	{
@@ -77,6 +71,7 @@ static void	redirect_fd(t_pipex_b *pipex, int idx)
 		close(pipex->fd[1]);
 	}
 }
+
 void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 {
 	t_cmds	*cmd;
@@ -86,10 +81,6 @@ void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 	if (!cmd->cmd)
 		free_pipex_exit(pipex);
 	execve(cmd->cmd, cmd->cmd_strs, envp);
-	if (pipex->infile != -1)
-		close(pipex->infile);
-	if (pipex->outfile != -1)
-		close(pipex->outfile);
 	close_pipes(pipex->fd);
 	free_pipex_exit(pipex);
 }
@@ -97,6 +88,7 @@ void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 void	launch_processes(t_pipex_b *pipex, char **envp)
 {
 	int	i;
+	int	wait_rtn;
 
 	pipex->pids = get_pids(pipex->cmd_count);
 	if (!pipex->pids)
@@ -114,7 +106,10 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 		if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
 			free_pipex_exit(pipex);
 		close_pipes(pipex->fd);
-		wait(NULL);
 	}
-		close(0);
+	waitpid(pipex->pids[pipex->cmd_count - 1], NULL, 0);
+	close(STDIN_FILENO);
+	wait_rtn = 0;
+	while (wait_rtn != -1)
+		wait_rtn = waitpid(-1, NULL, 0);
 }

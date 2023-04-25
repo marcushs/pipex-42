@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:56:23 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/21 15:48:40 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/25 16:30:30 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	launch_processes(t_pipex *pipex, char **envp)
 		close(pipex->infile);
 	if (pipex->outfile != -1)
 		close(pipex->outfile);
-	wait_status(pipex, 1);
 	wait_status(pipex, 2);
+	close(STDIN_FILENO);
+	wait_status(pipex, 1);
 }

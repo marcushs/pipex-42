@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:42:59 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 14:26:48 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/25 16:42:41 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ char	*start_here_doc(char *limiter)
 		line = get_next_line(0);
 		if (!line)
 			return (NULL);
-		if (ft_strlen(line) - 1 == lim_len && ft_strncmp(line, limiter, lim_len) == 0)
+		if (ft_strlen(line) - 1 == lim_len && \
+		ft_strncmp(line, limiter, lim_len) == 0)
 			return (free(line), line = NULL, rtn_str);
 		rtn_str = ft_join_line(rtn_str, line);
 		if (!rtn_str)
@@ -71,27 +72,27 @@ char	*start_here_doc(char *limiter)
 	}
 }
 
-void	launch_heredoc_process(t_pipex_b *pipex, int argc, char **argv, char **envp)
+void	launch_heredoc_process(t_pipex_b *pipex, int ac, char **av, char **env)
 {
 	char	*str;
 
 	pipex->hd_idx = 1;
-	pipex->cmd_count = argc - 4;
-	str = start_here_doc(argv[2]);
+	pipex->cmd_count = ac - 4;
+	str = start_here_doc(av[2]);
 	if (!str)
 		free_pipex_exit(pipex);
 	if (pipe(pipex->fd) == -1)
 		free_pipex_exit(pipex);
 	write_str_to_pipe(pipex, str);
 	free(str);
-	pipex->outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
-	if (pipex->outfile && access(argv[argc - 1], R_OK) == -1)
-		ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
-	pipex->path = find_path(envp);
-	pipex->cmds = args_to_lst(pipex, argv);
+	pipex->outfile = open(av[ac - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
+	if (pipex->outfile && access(av[ac - 1], R_OK) == -1)
+		ft_printf("Cannot open %s: Permission denied\n", av[ac - 1]);
+	pipex->path = find_path(env);
+	pipex->cmds = args_to_lst(pipex, av);
 	if (!pipex->cmds)
 		free_pipex_exit(pipex);
-	launch_processes(pipex, envp);
+	launch_processes(pipex, env);
 	free_pipex(pipex);
 	exit(EXIT_SUCCESS);
 }

@@ -34,7 +34,7 @@ char	*check_bin(char *cmd, char **path);
 void	free_2d_arr(void **arr);
 void	free_pipex(t_pipex_b *pipex);
 void	free_pipex_exit(t_pipex_b *pipex);
-void	lst_clear(t_cmds **head, void(*f)(void **));
+void	lst_clear(t_cmds **head);
 void	lst_addback(t_cmds **head, char *arg, int index, char **path);
 t_cmds	*args_to_lst(t_pipex_b *pipex, char **argv);
 void	lst_print(t_cmds *head);
@@ -44,4 +44,5 @@ int		wait_status(t_pipex_b *pipex, int pid);
 char	*start_here_doc(char *limiter);
 void	free_null_exit(char **str);
 void	launch_heredoc_process(t_pipex_b *pipex, int argc, char **argv, char **envp);
+void	close_pipes(int fd[2]);
 #endif

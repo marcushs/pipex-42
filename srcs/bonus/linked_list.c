@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:45 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/21 14:14:23 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/25 16:47:51 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static t_cmds	*lst_new(char *arg, int index, char **path)
 	new->cmd = NULL;
 	new->cmd_strs = ft_split(arg, ' ');
 	if (new->cmd_strs)
-		new->cmd = check_bin(new->cmd_strs[0], path);	
+		new->cmd = check_bin(new->cmd_strs[0], path);
 	new->index = index;
 	new->next = NULL;
 	return (new);
@@ -35,18 +35,18 @@ static t_cmds	*lst_last(t_cmds *head)
 	return (head);
 }
 
-void	lst_clear(t_cmds **head, void(*f)(void **))
+void	lst_clear(t_cmds **head)
 {
 	t_cmds	*tmp;
 
-	if (!*head || !*f)
+	if (!*head)
 		return ;
 	tmp = *head;
 	while (tmp)
 	{
 		free(tmp->cmd);
 		tmp->cmd = NULL;
-		f((void **)&tmp->cmd_strs);
+		free_2d_arr((void **)&tmp->cmd_strs);
 		tmp = tmp->next;
 		free(*head);
 		*head = tmp;
@@ -70,7 +70,7 @@ void	lst_addback(t_cmds **head, char *arg, int index, char **path)
 		last->next = new;
 	}
 	else
-		lst_clear(head, &free_2d_arr);
+		lst_clear(head);
 }
 
 t_cmds	*find_cmd(t_cmds *head, int idx)
@@ -87,4 +87,3 @@ t_cmds	*find_cmd(t_cmds *head, int idx)
 	}
 	return (NULL);
 }
-
