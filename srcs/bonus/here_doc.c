@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:42:59 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/21 12:10:58 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/25 14:26:48 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ void	write_str_to_pipe(t_pipex_b *pipex, char *str)
 		free_pipex_exit(pipex);
 	}
 	close(pipex->fd[1]);
-	free(str);
-	str = NULL;
 }
 
 char	*start_here_doc(char *limiter)
@@ -79,19 +77,20 @@ void	launch_heredoc_process(t_pipex_b *pipex, int argc, char **argv, char **envp
 
 	pipex->hd_idx = 1;
 	pipex->cmd_count = argc - 4;
-	if (pipe(pipex->fd) == -1)
-		free_pipex_exit(pipex);
 	str = start_here_doc(argv[2]);
 	if (!str)
 		free_pipex_exit(pipex);
+	if (pipe(pipex->fd) == -1)
+		free_pipex_exit(pipex);
+	write_str_to_pipe(pipex, str);
+	free(str);
 	pipex->outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
 	if (pipex->outfile && access(argv[argc - 1], R_OK) == -1)
 		ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
-	if (!pipex->cmds)
-		free_pipex_exit(pipex);
-	write_str_to_pipe(pipex, str);
 	pipex->path = find_path(envp);
 	pipex->cmds = args_to_lst(pipex, argv);
+	if (!pipex->cmds)
+		free_pipex_exit(pipex);
 	launch_processes(pipex, envp);
 	free_pipex(pipex);
 	exit(EXIT_SUCCESS);

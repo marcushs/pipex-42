@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/21 14:37:31 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/25 15:42:51 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,12 @@ static void	redirect_fd(t_pipex_b *pipex, int idx)
 			close(pipex->fd[0]);
 			dup2s(pipex);
 		}
-		else if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
-			free_pipex_exit(pipex);
-		close(pipex->fd[1]);
+		else
+		{
+			if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+				free_pipex_exit(pipex);
+			close(pipex->fd[1]);
+		} 
 	}
 	else if (idx == pipex->cmd_count - 1)
 	{
@@ -113,8 +116,5 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 		close_pipes(pipex->fd);
 		wait(NULL);
 	}
-	if (pipex->infile != -1)
-		close(pipex->infile);
-	if (pipex->outfile != -1)
-		close(pipex->outfile);
+		close(0);
 }
