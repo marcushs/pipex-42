@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:42:59 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 16:42:41 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/26 18:57:17 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,21 @@ void	write_str_to_pipe(t_pipex_b *pipex, char *str)
 	close(pipex->fd[1]);
 }
 
-char	*start_here_doc(char *limiter)
+char	*start_here_doc(int cmd_count, char *limiter)
 {
 	char	*line;
 	char	*rtn_str;
 	size_t	lim_len;
+	int		i;
 
 	rtn_str = NULL;
 	lim_len = ft_strlen(limiter);
 	while (1)
 	{
-		ft_printf("pipe heredoc> ");
+		i = cmd_count;
+		while (--i > 0)
+			ft_printf("pipe ");
+		ft_printf("heredoc> ");
 		line = get_next_line(0);
 		if (!line)
 			return (NULL);
@@ -78,7 +82,7 @@ void	launch_heredoc_process(t_pipex_b *pipex, int ac, char **av, char **env)
 
 	pipex->hd_idx = 1;
 	pipex->cmd_count = ac - 4;
-	str = start_here_doc(av[2]);
+	str = start_here_doc(pipex->cmd_count, av[2]);
 	if (!str)
 		free_pipex_exit(pipex);
 	if (pipe(pipex->fd) == -1)
