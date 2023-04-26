@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 17:48:22 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/26 16:57:55 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,10 @@ void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 
 	redirect_fd(pipex, idx);
 	cmd = find_cmd(pipex->cmds, idx);
-	if (!cmd->cmd)
-		free_pipex_exit(pipex);
-	execve(cmd->cmd, cmd->cmd_strs, envp);
+	if (cmd->cmd)
+		execve(cmd->cmd, cmd->cmd_strs, envp);
+	close(0);
+	close(1);
 	close_pipes(pipex->fd);
 	free_pipex_exit(pipex);
 }

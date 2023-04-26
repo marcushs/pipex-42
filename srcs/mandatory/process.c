@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:56:23 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 16:30:30 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/04/26 17:22:29 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ static void	first_child(t_pipex *pipex, int fd[2], char **envp)
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		free_pipex_exit(pipex);
 	close(fd[1]);
-	if (!pipex->cmd1)
-		exit(EXIT_FAILURE);
-	execve(pipex->cmd1, pipex->cmd1_strs, envp);
-	free_pipex_exit(pipex);
+	if (pipex->cmd1)
+		execve(pipex->cmd1, pipex->cmd1_strs, envp);
+	close(0);
+	close(1);
 	close_pipes(fd);
+	free_pipex_exit(pipex);
 }
 
 static void	second_child(t_pipex *pipex, int fd[2], char **envp)
@@ -55,11 +56,12 @@ static void	second_child(t_pipex *pipex, int fd[2], char **envp)
 		free_pipex_exit(pipex);
 	if (pipex->outfile != -1)
 		close(pipex->outfile);
-	if (!pipex->cmd2)
-		exit(EXIT_FAILURE);
-	execve(pipex->cmd2, pipex->cmd2_strs, envp);
-	free_pipex_exit(pipex);
+	if (pipex->cmd2)
+		execve(pipex->cmd2, pipex->cmd2_strs, envp);
+	close(0);
+	close(1);
 	close_pipes(fd);
+	free_pipex_exit(pipex);
 }
 
 void	launch_processes(t_pipex *pipex, char **envp)
