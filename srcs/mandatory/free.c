@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:56:05 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/26 17:24:38 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/03 16:11:10 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,6 @@ void	free_2d_arr(void **arr)
 	*arr = NULL;
 }
 
-void	strerror_exit(void)
-{
-	strerror(errno);
-	exit(errno);
-}
-
 void	print_msg_exit(char *msg)
 {
 	ft_printf("%s", msg);
@@ -69,6 +63,7 @@ void	free_pipex(t_pipex *pipex)
 	if (pipex->outfile != -1)
 		close(pipex->outfile);
 }
+
 void	free_pipex_exit(t_pipex *pipex)
 {
 	free_pipex(pipex);

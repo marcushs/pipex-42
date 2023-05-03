@@ -6,13 +6,13 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:56:23 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/26 17:22:29 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/03 16:11:27 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex.h"
 
-static void	close_pipes(int	fd[2])
+static void	close_pipes(int fd[2])
 {
 	close(fd[0]);
 	close(fd[1]);
