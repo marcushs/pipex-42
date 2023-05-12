@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/12 13:58:39 by hleung            #+#    #+#             */
+/*   Updated: 2023/05/12 13:59:02 by hleung           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static char	*ft_join_line(char *s1, char *s2, size_t size)
@@ -20,7 +32,7 @@ static char	*ft_join_line(char *s1, char *s2, size_t size)
 	while (j < size)
 		join[i++] = s2[j++];
 	join[i] = 0;
-	return (free(s1), s1 = NULL, join);	
+	return (free(s1), s1 = NULL, join);
 }
 
 static int	ft_check_end_line(char buf[BUFFER_SIZE], char **tmp)

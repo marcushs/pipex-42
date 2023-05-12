@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:56:23 by hleung            #+#    #+#             */
-/*   Updated: 2023/05/03 16:11:27 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/12 09:59:48 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ static void	second_child(t_pipex *pipex, int fd[2], char **envp)
 	close(fd[1]);
 	if (pipex->infile != -1)
 		close(pipex->infile);
+	if (pipex->outfile == -1)
+	{
+		close(fd[0]);
+		free_pipex_exit(pipex);
+	}
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		free_pipex_exit(pipex);
 	close(fd[0]);

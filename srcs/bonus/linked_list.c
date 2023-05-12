@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:45 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 16:47:51 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/12 13:33:15 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static t_cmds	*lst_new(char *arg, int index, char **path)
 	if (!new)
 		return (NULL);
 	new->cmd = NULL;
+	if (!arg[0])
+		ft_putstr_fd("Command not found:\n", 1);
 	new->cmd_strs = ft_split(arg, ' ');
 	if (new->cmd_strs)
 		new->cmd = check_bin(new->cmd_strs[0], path);

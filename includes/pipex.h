@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/12 13:55:13 by hleung            #+#    #+#             */
+/*   Updated: 2023/05/12 13:56:32 by hleung           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PIPEX_H
-#define PIPEX_H
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <errno.h>
-#include "../libft/libft.h"
-#define ARG_NUM_ERR "Wrong number of argument\n"
+# define PIPEX_H
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <errno.h>
+# include "../libft/libft.h"
+# define ARG_NUM_ERR "Wrong number of argument\n"
 
 typedef struct s_pipex
 {

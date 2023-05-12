@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:59:14 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/21 13:48:16 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/12 09:53:59 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ char	**find_path(char **envp)
 
 void	parse_cmd_for_exec(t_pipex *pipex, char **argv)
 {
+	if (!argv[2][0])
+		ft_putstr_fd("Command not found:\n", 1);
+	if (!argv[3][0])
+		ft_putstr_fd("Command not found:\n", 1);
 	pipex->cmd1_strs = ft_split(argv[2], ' ');
 	pipex->cmd2_strs = ft_split(argv[3], ' ');
 	if (!pipex->cmd1_strs || !pipex->cmd2_strs)

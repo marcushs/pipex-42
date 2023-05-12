@@ -6,23 +6,24 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/26 18:19:45 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/12 13:08:01 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_b.h"
 
-static int	*get_pids(int cmd_count)
+static void	last_child_dup2(t_pipex_b *pipex)
 {
-	int	*pids;
-
-	pids = (int *)malloc(sizeof(int) * cmd_count);
-	if (!pids)
+	close(pipex->fd[1]);
+	if (pipex->outfile == -1)
 	{
-		perror("Malloc error");
-		return (NULL);
+		close(pipex->fd[0]);
+		close(0);
+		free_pipex_exit(pipex);
 	}
-	return (pids);
+	if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
+		free_pipex_exit(pipex);
+	close(pipex->outfile);
 }
 
 static void	dup2s(t_pipex_b *pipex)
@@ -57,12 +58,7 @@ static void	redirect_fd(t_pipex_b *pipex, int idx)
 		}
 	}
 	else if (idx == pipex->cmd_count - 1)
-	{
-		close(pipex->fd[1]);
-		if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
-			free_pipex_exit(pipex);
-		close(pipex->outfile);
-	}
+		last_child_dup2(pipex);
 	else
 	{
 		close(pipex->fd[0]);
@@ -90,10 +86,9 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 {
 	int	i;
 	int	wait_rtn;
+	int	pids[pipex->cmd_count];
 
-	pipex->pids = get_pids(pipex->cmd_count);
-	if (!pipex->pids)
-		free_pipex_exit(pipex);
+	pipex->pids = pids;
 	i = -1;
 	while (++i < pipex->cmd_count)
 	{

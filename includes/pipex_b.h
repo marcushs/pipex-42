@@ -1,19 +1,31 @@
-#ifndef PIPEX_H
-#define PIPEX_H
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <errno.h>
-#include "../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_b.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/12 13:55:31 by hleung            #+#    #+#             */
+/*   Updated: 2023/05/12 13:57:24 by hleung           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PIPEX_B_H
+# define PIPEX_B_H
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <errno.h>
+# include "../libft/libft.h"
 
 typedef struct s_cmds
 {
-	char		*cmd;
-	char		**cmd_strs;
-	int			index;
+	char			*cmd;
+	char			**cmd_strs;
+	int				index;
 	struct s_cmds	*next;
 }				t_cmds;
 
@@ -43,6 +55,6 @@ void	launch_processes(t_pipex_b *pipex, char **envp);
 int		wait_status(t_pipex_b *pipex, int pid);
 char	*start_here_doc(int cmd_count, char *limiter);
 void	free_null_exit(char **str);
-void	launch_heredoc_process(t_pipex_b *pipex, int argc, char **argv, char **envp);
+void	launch_heredoc_process(t_pipex_b *pipex, int ac, char **av, char **ep);
 void	close_pipes(int fd[2]);
 #endif

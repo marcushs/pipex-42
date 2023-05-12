@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:42:59 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/26 18:57:17 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/12 14:18:57 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*start_here_doc(int cmd_count, char *limiter)
 	}
 }
 
-void	launch_heredoc_process(t_pipex_b *pipex, int ac, char **av, char **env)
+void	launch_heredoc_process(t_pipex_b *pipex, int ac, char **av, char **ep)
 {
 	char	*str;
 
@@ -92,11 +92,11 @@ void	launch_heredoc_process(t_pipex_b *pipex, int ac, char **av, char **env)
 	pipex->outfile = open(av[ac - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
 	if (pipex->outfile && access(av[ac - 1], R_OK) == -1)
 		ft_printf("Cannot open %s: Permission denied\n", av[ac - 1]);
-	pipex->path = find_path(env);
+	pipex->path = find_path(ep);
 	pipex->cmds = args_to_lst(pipex, av);
 	if (!pipex->cmds)
 		free_pipex_exit(pipex);
-	launch_processes(pipex, env);
+	launch_processes(pipex, ep);
 	free_pipex(pipex);
 	exit(EXIT_SUCCESS);
 }

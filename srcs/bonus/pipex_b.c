@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:55 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/25 16:39:37 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/12 10:29:58 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strcmp(argv[1], "here_doc") == 0)
 			launch_heredoc_process(&pipex, argc, argv, envp);
 		pipex.infile = open(argv[1], O_RDONLY);
-		if (pipex.infile == -1)
+		if (access(argv[1], F_OK) == -1)
 			ft_printf("No such file or directory: %s\n", argv[1]);
-		if (pipex.infile != -1 && access(argv[1], R_OK) == -1)
+		else if (access(argv[1], F_OK) == 0 && access(argv[1], R_OK) == -1)
 			ft_printf("Cannot open %s: Permission denied\n", argv[1]);
 		pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
-		if (pipex.outfile && access(argv[argc - 1], R_OK) == -1)
+		if (access(argv[argc - 1], R_OK) == -1)
 			ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
 		pipex.path = find_path(envp);
 		pipex.cmds = args_to_lst(&pipex, argv);

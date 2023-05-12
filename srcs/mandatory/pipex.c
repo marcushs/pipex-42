@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:55:51 by hleung            #+#    #+#             */
-/*   Updated: 2023/04/21 15:45:19 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/12 10:05:28 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ int	main(int argc, char **argv, char **envp)
 		print_msg_exit(ARG_NUM_ERR);
 	pipex = init_pipex();
 	pipex.infile = open(argv[1], O_RDONLY);
-	if (pipex.infile == -1)
+	if (access(argv[1], F_OK) == -1)
 		ft_printf("No such file or directory: %s\n", argv[1]);
-	if (pipex.infile != -1 && access(argv[1], R_OK) == -1)
+	else if (access(argv[1], F_OK) == 0 && access(argv[1], R_OK) == -1)
 		ft_printf("Cannot open %s: Permission denied\n", argv[1]);
 	pipex.outfile = open(argv[argc - 1], O_CREAT | O_TRUNC | O_RDWR, 0777);
-	if (pipex.outfile && access(argv[argc - 1], R_OK) == -1)
+	if (access(argv[argc - 1], R_OK) == -1)
 		ft_printf("Cannot open %s: Permission denied\n", argv[argc - 1]);
 	pipex.path = find_path(envp);
 	parse_cmd_for_exec(&pipex, argv);
