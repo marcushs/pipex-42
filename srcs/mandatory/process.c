@@ -38,8 +38,8 @@ static void	first_child(t_pipex *pipex, int fd[2], char **envp)
 	close(fd[1]);
 	if (pipex->cmd1)
 		execve(pipex->cmd1, pipex->cmd1_strs, envp);
-	close(0);
-	close(1);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	close_pipes(fd);
 	free_pipex_exit(pipex);
 }
@@ -63,8 +63,8 @@ static void	second_child(t_pipex *pipex, int fd[2], char **envp)
 		close(pipex->outfile);
 	if (pipex->cmd2)
 		execve(pipex->cmd2, pipex->cmd2_strs, envp);
-	close(0);
-	close(1);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	close_pipes(fd);
 	free_pipex_exit(pipex);
 }

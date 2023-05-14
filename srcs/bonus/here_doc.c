@@ -24,6 +24,11 @@ static char	*ft_join_line(char *s1, char *s2)
 		join = (char *)malloc(s2_len + 1);
 	else
 		join = (char *)malloc(ft_strlen(s1) + s2_len + 1);
+	if (!join)
+	{
+		ft_putstr_fd("Malloc error\n", 1);
+		return (NULL);
+	}
 	i = 0;
 	j = 0;
 	while (s1 && s1[j])
