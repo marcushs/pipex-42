@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/05/12 13:08:01 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/15 09:27:54 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,10 @@ void	launch_processes(t_pipex_b *pipex, char **envp)
 {
 	int	i;
 	int	wait_rtn;
-	int	pids[pipex->cmd_count];
 
-	pipex->pids = pids;
+	pipex->pids = get_pids(pipex->cmd_count);
+	if (!pipex->pids)
+		free_pipex_exit(pipex);
 	i = -1;
 	while (++i < pipex->cmd_count)
 	{

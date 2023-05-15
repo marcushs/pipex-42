@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:17:45 by hleung            #+#    #+#             */
-/*   Updated: 2023/05/12 13:33:15 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/15 11:54:36 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,16 @@ static t_cmds	*lst_new(char *arg, int index, char **path)
 
 	new = (t_cmds *)malloc(sizeof(t_cmds));
 	if (!new)
+	{
+		ft_putstr_fd("Malloc error\n", 1);
 		return (NULL);
+	}
 	new->cmd = NULL;
-	if (!arg[0])
-		ft_putstr_fd("Command not found:\n", 1);
-	new->cmd_strs = ft_split(arg, ' ');
+	new->cmd_strs = NULL;
+	if ((!arg[0]) | all_space(arg))
+		ft_printf("Command not found: %s\n", arg);
+	else
+		new->cmd_strs = ft_split_space(arg);
 	if (new->cmd_strs)
 		new->cmd = check_bin(new->cmd_strs[0], path);
 	new->index = index;

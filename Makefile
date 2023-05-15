@@ -6,9 +6,13 @@
 #    By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/12 14:27:32 by hleung            #+#    #+#              #
-#    Updated: 2023/05/12 14:29:58 by hleung           ###   ########lyon.fr    #
+#    Updated: 2023/05/15 12:45:59 by hleung           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
+
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+NC = \033[0m
 
 NAME			=	pipex
 BONUS			=	pipex_b
@@ -47,9 +51,11 @@ bonus:			${BONUS}
 
 ${NAME}:		${DIR_M_OBJS} ${M_OBJS} ${LIB} ./includes/pipex.h
 				${CC} ${CFLAGS} -g ${M_OBJS} ${LIB_FLAGS} -o ${NAME}
+				@echo "${GREEN}Compiled pipex! ${NC}"
 
 ${BONUS}:		${DIR_B_OBJS} ${B_OBJS} ${LIB} ./includes/pipex_b.h
 				${CC} ${CFLAGS} -g ${B_OBJS} -o ${BONUS} ${LIB_FLAGS}
+				@echo "${GREEN}Compiled pipex_b! ${NC}"
 
 ${DIR_M_OBJS}:	
 				mkdir -p ${DIR_M_OBJS}
@@ -58,17 +64,21 @@ ${DIR_B_OBJS}:
 				mkdir -p ${DIR_B_OBJS}
 
 ${LIB}:			force
-				${MAKE} -C ./libft
+				${MAKE} -sC ./libft
 
 clean:
 				${RM} ${DIR_M_OBJS} ${DIR_B_OBJS}
-				${MAKE} clean -C ./libft
+				${MAKE} clean -sC ./libft
+				@echo "${YELLOW}Object files and libraries cleared!${NC}"
 
 fclean:			clean
-				${MAKE} fclean -C ./libft
+				${MAKE} fclean -sC ./libft
 				${RM} ${NAME} ${BONUS}
+				@echo "${YELLOW}Executable cleared!${NC}"
 
 re:				fclean
 				${MAKE} all
+
+.SILENT:
 
 .PHONY:			all clean fclean re .c.o bonus force
