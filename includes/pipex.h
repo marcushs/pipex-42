@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 13:55:13 by hleung            #+#    #+#             */
-/*   Updated: 2023/05/15 09:28:53 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/15 12:51:35 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define PIPEX_H
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -46,7 +44,6 @@ int		wait_status(t_pipex *pipex, int pid);
 //free
 void	free_2d_arr(void **arr);
 void	print_msg_exit(char *msg);
-void	strerror_exit(void);
 void	free_pipex(t_pipex *pipex);
 void	free_prev_arr(void **arr, int i);
 void	free_pipex_exit(t_pipex *pipex);

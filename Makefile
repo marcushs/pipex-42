@@ -6,7 +6,7 @@
 #    By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/12 14:27:32 by hleung            #+#    #+#              #
-#    Updated: 2023/05/15 12:45:59 by hleung           ###   ########lyon.fr    #
+#    Updated: 2023/05/15 12:48:13 by hleung           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME			=	pipex
 BONUS			=	pipex_b
 CC				=	gcc
 RM				=	rm -rf
-CFLAGS			=	-Wall -Wextra -Werror #-fsanitize=address
+CFLAGS			=	-Wall -Wextra -Werror
 LIB				=	./libft/libft.a
 LIB_FLAGS		=	-L libft -lft
 DIR_M_SRCS		=	./srcs/mandatory/

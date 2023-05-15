@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 13:55:31 by hleung            #+#    #+#             */
-/*   Updated: 2023/05/15 11:51:00 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/15 12:54:13 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define PIPEX_B_H
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>

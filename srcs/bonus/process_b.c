@@ -6,7 +6,7 @@
 /*   By: hleung <hleung@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:18:09 by hleung            #+#    #+#             */
-/*   Updated: 2023/05/15 09:27:54 by hleung           ###   ########lyon.fr   */
+/*   Updated: 2023/05/15 12:54:47 by hleung           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	last_child_dup2(t_pipex_b *pipex)
 	if (pipex->outfile == -1)
 	{
 		close(pipex->fd[0]);
-		close(0);
+		close(STDIN_FILENO);
 		free_pipex_exit(pipex);
 	}
 	if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
@@ -76,8 +76,8 @@ void	child_processes(t_pipex_b *pipex, char **envp, int idx)
 	cmd = find_cmd(pipex->cmds, idx);
 	if (cmd->cmd)
 		execve(cmd->cmd, cmd->cmd_strs, envp);
-	close(0);
-	close(1);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	close_pipes(pipex->fd);
 	free_pipex_exit(pipex);
 }
